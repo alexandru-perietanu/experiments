@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+            let circle;
+            let step = 0;
+            let speed = 0.05;
+            let direction = 1;
+            let minRadius = 50;
+            let maxRadius = 100;
+
+
+            function init() {
+                circle = document.getElementsByClassName("circle")[0];
+            };
+
+            window.requestAnimationFrame(pulsate);
+
+            function pulsate() {
+                let pulseFactor = Math.cos(step);
+                // if (pulseFactor < 0) {
+                //     pulseFactor = 0;
+                // }
+                step += direction * speed;
+                step = Number(step.toPrecision(4));
+                if (step >= Math.PI / 2 || step <= 0.01) {
+                    direction *= -1;
+                }
+                circle.style.width = (minRadius + maxRadius * pulseFactor) + "px";
+                circle.style.height = (minRadius + maxRadius * pulseFactor) + "px";
+                circle.style.marginLeft = (-1 * (minRadius + maxRadius * pulseFactor) / 2) + "px";
+                circle.style.marginTop = (-1 * (minRadius + maxRadius * pulseFactor) / 2) + "px";
+                window.requestAnimationFrame(pulsate);
+            }
+           
+            window.onload = init;
+        </script>
+        <style>
+            body {
+                width: 100vw;
+                height: 100vh;
+                margin: 0;
+                padding: 0;
+            }
+
+            .circle {
+                display: inline-block;
+                border-radius: 100px;
+                background: red;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="circle"></div>
+    </body>
+</html>
