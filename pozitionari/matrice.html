@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+
+            let matrice;
+            let body;
+            let nrColumns = 10;
+            let nrLines = 10;
+            let width = 10;
+            let height = 10;
+            let space = 5;
+            let square;
+
+            function init() {
+                positionElementWithAbsolutePosition();
+                positionElementUsingBrowser();
+            };
+
+            function positionElementWithAbsolutePosition() {
+                matrice = document.getElementsByClassName("matrice")[0];
+                for (let i = 0; i < nrLines; i++) {
+                    for (let j = 0; j < nrColumns; j++) {
+                        square = document.createElement("div");
+                        square.className = "squareAbsolute";
+                        square.id = "square" + i + j;
+                        // if (i == j) {
+                        //     square.style.background = "green";
+                        // }
+                        
+                        //tabla de sah
+                        // if (i % 2 == 0) {
+                        //     if (j % 2 != 0) {
+                        //        square.style.background = "green";
+                        //     }
+                        // } else {
+                        //     if (j % 2 == 0) {
+                        //        square.style.background = "green";
+                        //     }
+                        // }
+                        square.style.left = (j * (width + space)) + "px"; 
+                        square.style.top = (i * (height + space)) + "px";
+                        matrice.appendChild(square);
+                    }
+                }
+            };
+
+            function positionElementUsingBrowser() {
+                matriceSimpla = document.getElementsByClassName("matriceSimpla")[0];
+                for (let i = 0; i < nrLines * nrColumns; i++) {
+                        square = document.createElement("div");
+                        square.className = "squareSimple";
+                        square.id = "squareSimple" + i + (i % 10);
+                        matriceSimpla.appendChild(square);
+                }
+                
+            }
+
+          
+            window.onload = init;
+        </script>
+        <style>
+            .matrice {
+                position: relative;
+                height: 150px;
+                width: 150px;
+                border: 1px solid black;
+                margin-bottom: 20px;
+            }
+
+            .matriceSimpla {
+                line-height: 0;
+                width: 150px;
+                height: 150px;
+                border: 1px solid black;
+            }
+
+            .squareAbsolute {
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                margin-bottom: 5px;
+                margin-right: 5px;
+                background: red;
+            }
+
+            .squareSimple {
+                display: inline-block;
+                width: 10px;
+                height: 10px;
+                margin-bottom: 5px;
+                margin-right: 5px;
+                background: red;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="matrice">
+            
+        </div>
+        <div class="matriceSimpla">
+            
+        </div>
+    </body>
+</html>

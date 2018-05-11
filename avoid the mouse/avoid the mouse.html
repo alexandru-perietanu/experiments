@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+
+            let matrice;
+            let body;
+            let nrColumns = 10;
+            let nrLines = 10;
+            let width = 10;
+            let height = 10;
+            let space = 5;
+            let radius = 100;
+            
+            function init() {
+                body = document.getElementsByTagName("body")[0];
+                positionElementWithAbsolutePosition();
+                addMouseMoveListener();
+            };
+
+            function positionElementWithAbsolutePosition() {
+                let square;
+                matrice = document.getElementsByClassName("matrice")[0];
+                for (let i = 0; i < nrLines; i++) {
+                    for (let j = 0; j < nrColumns; j++) {
+                        square = document.createElement("div");
+                        square.className = "squareAbsolute";
+                        square.id = "square" + i + j;
+                        square.style.left = (j * (width + space)) + "px"; 
+                        square.style.top = (i * (height + space)) + "px";
+                        matrice.appendChild(square);
+                    }
+                }
+            };
+
+            function addMouseMoveListener() {
+                body.addEventListener("mousemove", bodyMouseMove);
+            };
+
+            function bodyMouseMove(e) {
+                let currentSquare;
+                let distance;
+                let squareX;
+                let squareY;
+                let clientX = e.clientX;
+                let clientY = e.clientY;
+                let angle;
+                let angleDeg;
+                let squareParent;
+                currentSquare = document.getElementById("square00");
+                squareParent = currentSquare.parentElement;
+                let i = 5;
+                let j = 5;
+                
+                for (let i = 0; i < nrLines; i++) {
+                    for (let j = 0; j < nrColumns; j++) {   
+                        currentSquare = document.getElementById("square" + i + j);
+                        squareX = squareParent.offsetLeft + j * (width + space);
+                        squareY = squareParent.offsetTop + i * (height + space);
+                        angle = Math.atan2(squareY - e.clientY, squareX - e.clientX);
+                        //angleDeg = (180 * angle) / Math.PI;
+                        distance = Math.sqrt((clientX - squareX) * (clientX - squareX) + (clientY - squareY) * (clientY - squareY));
+                        console.log(distance);
+                        if (distance < radius) {
+                            currentSquare.style.left = ((squareX - squareParent.offsetLeft) + Math.cos(angle) * radius) + "px";
+                            currentSquare.style.top = ((squareY - squareParent.offsetTop) + Math.sin(angle) * radius) + "px";
+                        } else {
+                            currentSquare.style.left = (j * (width + space)) + "px"; 
+                            currentSquare.style.top = (i * (height + space)) + "px";
+                        }
+                    }
+                }
+            };
+            
+
+            window.onload = init;
+        </script>
+        <style>
+            body {
+                width: 100vw;
+                height: 100vh;
+            }
+            .matrice {
+                position: absolute;
+                height: 150px;
+                width: 150px;
+                border: 1px solid black;
+                margin-bottom: 20px;
+                left: 50%;
+                margin-left: -75px;
+                top: 50%;
+                margin-top: -75px;
+                transform: translateZ(0);
+            }
+
+            .squareAbsolute {
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                margin-bottom: 5px;
+                margin-right: 5px;
+                background: red;
+                border-radius: 10px;
+                transition: left .3s, top .3s;
+                transform: translateZ(0);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="matrice">
+            
+        </div>
+        
+    </body>
+</html>
