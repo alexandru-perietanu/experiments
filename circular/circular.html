@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+            let line;
+            let cx;
+            let cy;
+            let body;
+
+            function init() {
+                line = document.getElementsByClassName("line")[0];
+                cx = line.offsetLeft;
+                cy = line.offsetTop;
+
+                body = document.getElementsByTagName("body")[0];
+                body.addEventListener("mousemove", bodyMouseMove);
+            };
+
+            function bodyMouseMove(e) {
+                let angle = Math.atan2(cy - e.clientY, cx - e.clientX);
+                var angleDeg = (180 * angle) / Math.PI;
+                angle = angleDeg < 0 ? 360 + angleDeg : angleDeg;
+                console.log(angleDeg < 0 ? 360 + angleDeg : angleDeg);
+                
+                line.style.transform = "rotate(" + (angleDeg - 180) + "deg)";
+            }
+
+            window.onload = init;
+        </script>
+        <style>
+            body {
+                width: 100vw;
+                height: 100vh;
+                margin: 0;
+                padding: 0;
+            }
+
+            .line {
+                background: #000;
+                height: 5px;
+                width: 100px;
+                display: inline-block;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                text-align: right;
+                margin-left: -50px;
+            }
+
+            .circle {
+                display: inline-block;
+                width: 5px;
+                height: 5px;
+                border-radius: 15px;
+                background: red;
+                position: absolute;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="line">
+            <span class="circle"></span>
+        </div>
+    </body>
+</html>

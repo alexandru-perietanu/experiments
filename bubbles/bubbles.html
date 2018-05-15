@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+
+            let body;
+            let clientX;
+            let clientY;
+            let maxBubbles = 100;
+            let bubbles = [];
+            
+            function init() {
+                body = document.getElementsByTagName("body")[0];
+                addMouseMoveListener();
+                generateBubbles();
+                renderBubbles();
+                window.requestAnimationFrame(moveBubbles);
+            };
+
+            function generateBubbles() {
+                let bubble;
+                for (let i = 0; i < maxBubbles; i++) {
+                    bubble = {
+                        amplitude: Math.round(Math.random() * 5),
+                        incrementStep: .05 + Math.random() / 100,
+                        direction: (i % 2 == 0 ? 1 : -1),
+                        amplitudeStep: 0,
+                        radius: 5 + Math.round(Math.random() * 15),
+                        speed: 2 + Math.round(Math.random() * 10),
+                        initialX: 0,
+                        initialY: 0, 
+                        currentX: 0, 
+                        currentY: 0
+                    }
+
+                    bubbles.push(bubble);
+                }              
+            };
+
+            function renderBubbles() {
+                let bubble;
+                for (let i = 0; i < maxBubbles; i++) {
+                    bubble = document.createElement("div");
+                    bubble.className = "bubble";
+                    bubble.style.width = bubbles[i].radius + "px";
+                    bubble.style.height = bubbles[i].radius + "px";
+                    bubbles[i].initialX = clientX | 0;
+                    bubbles[i].initialY = clientY | 0;
+                    bubbles[i].currentX = clientX | 0;
+                    bubbles[i].currentY = clientY | 0;
+                    bubbles[i].element = bubble;
+                    bubble.style.left = bubbles[i].currentX + "px";
+                    bubble.style.top = bubbles[i].currentY + "px";
+
+                    body.appendChild(bubble);
+                }
+            }
+
+            function addMouseMoveListener() {
+                body.addEventListener("mousemove", bodyMouseMove);
+            };
+
+            function bodyMouseMove(e) {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            };           
+            
+            function moveBubbles() {
+                let bubble;
+                 for (let i = 0; i < maxBubbles; i++) {
+
+                    bubble = bubbles[i].element;
+                    
+                    bubbles[i].currentX = bubbles[i].currentX + Math.sin(bubbles[i].amplitudeStep) * bubbles[i].amplitude;
+                    bubbles[i].amplitudeStep += bubbles[i].incrementStep;
+                    bubbles[i].currentY = bubbles[i].currentY - bubbles[i].speed;
+                    bubble.style.left = bubbles[i].currentX + "px";
+                    bubble.style.top = bubbles[i].currentY + "px";
+
+                    if (bubbles[i].currentY < 0) {
+                        bubbles[i].initialX = clientX | 0;
+                        bubbles[i].initialY = clientY | 0;
+                        bubbles[i].currentX = clientX | 0;
+                        bubbles[i].currentY = clientY | 0;
+                        bubbles[i].speed = 2 + Math.round(Math.random() * 10),
+                        bubbles[i].incrementStep = (.05 + Math.random() / 100) * bubbles[i].direction,
+                        bubbles[i].amplitudeStep = 0;
+                    }
+                }
+              
+                window.requestAnimationFrame(moveBubbles);
+            }
+
+            window.onload = init;
+        </script>
+        <style>
+            body {
+                width: 100vw;
+                height: 100vh;
+                margin: 0;
+            }
+            .bubble {
+                display: inline-block;
+                position: absolute;
+                border: 1px solid blue;
+                border-radius: 20px;
+            }
+         
+        </style>
+    </head>
+    <body>
+    </body>
+</html>
