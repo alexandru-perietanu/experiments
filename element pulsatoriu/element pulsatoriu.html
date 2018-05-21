@@ -12,9 +12,10 @@
 
             function init() {
                 circle = document.getElementsByClassName("circle")[0];
+                window.requestAnimationFrame(pulsate);
             };
 
-            window.requestAnimationFrame(pulsate);
+            
 
             function pulsate() {
                 let pulseFactor = Math.cos(step);

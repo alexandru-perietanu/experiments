@@ -18,6 +18,7 @@
                 body = document.getElementsByTagName("body")[0];
                 positionElementWithAbsolutePosition();
                 addMouseMoveListener();
+                window.requestAnimationFrame(moveSquares);
             };
 
             function positionElementWithAbsolutePosition() {
@@ -42,9 +43,7 @@
             function bodyMouseMove(e) {
                 clientX = e.clientX;
                 clientY = e.clientY;
-            };
-
-            window.requestAnimationFrame(moveSquares);
+            };           
             
             function moveSquares() {
                 let currentSquare;

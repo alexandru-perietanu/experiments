@@ -49,9 +49,12 @@
                 matriceSimpla = document.getElementsByClassName("matriceSimpla")[0];
                 for (let i = 0; i < nrLines * nrColumns; i++) {
                         square = document.createElement("div");
-                        square.className = "squareSimple";
+                        
                         square.id = "squareSimple" + i + (i % 10);
+                        //square.style.display = "inline-block";
                         matriceSimpla.appendChild(square);
+                        //square.className = "squareSimple";
+                        square.classList.add("squareSimple");
                 }
                 
             }
@@ -61,6 +64,7 @@
         </script>
         <style>
             .matrice {
+                display: inline-block;
                 position: relative;
                 height: 150px;
                 width: 150px;
@@ -69,7 +73,8 @@
             }
 
             .matriceSimpla {
-                line-height: 0;
+                display: inline-block;
+                /*line-height: 0;*/
                 width: 150px;
                 height: 150px;
                 border: 1px solid black;
@@ -77,19 +82,19 @@
 
             .squareAbsolute {
                 position: absolute;
-                width: 10px;
-                height: 10px;
-                margin-bottom: 5px;
-                margin-right: 5px;
+                width: 30px;
+                height: 30px;
+                /* margin-bottom: 5px; */
+                /* margin-right: 5px; */
                 background: red;
             }
 
             .squareSimple {
                 display: inline-block;
-                width: 10px;
-                height: 10px;
-                margin-bottom: 5px;
-                margin-right: 5px;
+                width: 30px;
+                height: 30px;
+                /*margin-bottom: 5px;*/
+                /* margin-right: 5px; */
                 background: red;
             }
         </style>

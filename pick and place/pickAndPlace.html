@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+
+            let matrice;
+            let matriceDest;
+            let body;
+            let nrColumns = 5;
+            let nrLines = 5;
+            let width = 50;
+            let height = 50;
+            let space = 5;
+            let square;
+            let draggedElement;
+            let draggedElementCopy;
+            let placed = false;
+
+            function init() {
+                body = document.getElementsByTagName("body")[0];
+                positionElementWithAbsolutePositionSource();
+                positionElementWithAbsolutePositionDest();
+                addEventListeners();
+            };
+
+            function addEventListeners() {
+                matrice = document.getElementsByClassName("source")[0];
+                matriceDest = document.getElementsByClassName("dest")[0];
+                matrice.addEventListener("mousedown", sourceMouseDown);
+                matriceDest.addEventListener("mousedown", destMouseDown);
+                
+            };         
+
+            function destMouseDown(e) {
+                var clickedElement = e.target;
+                var i, j;
+                if (clickedElement.id.indexOf("squareSource") == -1) {
+                    return;
+                }
+                matriceDest.removeChild(clickedElement);
+                matrice.appendChild(clickedElement);
+                j = parseInt(clickedElement.id[clickedElement.id.length - 1]);
+                i = parseInt(clickedElement.id[clickedElement.id.length - 2]);
+                clickedElement.style.left = (j * (width + space)) + "px"; 
+                clickedElement.style.top = (i * (height + space)) + "px";
+                
+            };
+
+            function sourceMouseDown(e) {
+                
+                draggedElement = e.target;
+                if (draggedElement.id.indexOf("squareSource") == -1) {
+                    return;
+                }
+                draggedElementCopy = draggedElement.cloneNode();
+                draggedElement.style.opacity = .3;
+                body.appendChild(draggedElementCopy);
+                draggedElementCopy.style.position = "absolute";
+                draggedElementCopy.style.marginLeft = "-25px";
+                draggedElementCopy.style.marginTop = "-25px";
+                draggedElementCopy.style.left = e.clientX + "px"; 
+                draggedElementCopy.style.top = e.clientY + "px";
+                draggedElementCopy.style.pointerEvents = "none";
+                draggedElementCopy.innerHTML = draggedElement.innerHTML;
+
+                body.addEventListener("mousemove", bodyMouseMove);
+                body.addEventListener("mouseup", bodyMouseUp);
+                matriceDest.addEventListener("mouseup", destMouseUp);
+                placed = false;
+            };
+
+            function bodyMouseMove(e) {
+                draggedElementCopy.style.left = e.clientX + "px";
+                draggedElementCopy.style.top = e.clientY + "px";
+            };
+
+            function destMouseUp(e) {
+                //debugger;
+                console.log("dest mouse up");
+                if (e.target.id.indexOf("squareDest") == -1) {
+
+                    return;
+                }
+                matrice.removeChild(draggedElement);
+                matriceDest.appendChild(draggedElement);
+                draggedElement.style.left = e.target.style.left; 
+                draggedElement.style.top = e.target.style.top;
+                draggedElement.style.opacity = 1;
+                matriceDest.removeEventListener("mouseup", destMouseUp);
+                placed = true;
+            };  
+
+            function bodyMouseUp(e) {
+                //debugger;
+                console.log("body mouse up");
+                body.removeEventListener("mousemove", bodyMouseMove);
+                body.removeEventListener("mouseup", bodyMouseUp);
+                body.removeChild(draggedElementCopy);
+                if (!placed) {
+                    draggedElement.style.opacity = 1;
+                }
+                
+                draggedElementCopy = null;
+                
+            };
+
+            function positionElementWithAbsolutePositionSource() {
+                matrice = document.getElementsByClassName("source")[0];
+                for (let i = 0; i < nrLines; i++) {
+                    for (let j = 0; j < nrColumns; j++) {
+                        square = document.createElement("div");
+                        square.className = "squareSource";
+                        square.id = "squareSource" + i + j;
+                        square.style.left = (j * (width + space)) + "px"; 
+                        square.style.top = (i * (height + space)) + "px";
+                        square.innerHTML = "" + i + j;
+                        matrice.appendChild(square);
+                    }
+                }
+            };
+
+            function positionElementWithAbsolutePositionDest() {
+                matrice = document.getElementsByClassName("dest")[0];
+                for (let i = 0; i < nrLines; i++) {
+                    for (let j = 0; j < nrColumns; j++) {
+                        square = document.createElement("div");
+                        square.className = "squareDest";
+                        square.id = "squareDest" + i + j;
+                        square.style.left = (j * (width + space)) + "px"; 
+                        square.style.top = (i * (height + space)) + "px";
+                        matrice.appendChild(square);
+                    }
+                }
+            };
+
+            window.onload = init;
+        </script>
+        <style>
+            body {
+                user-select: none;
+                height: 100vh;
+                width: 100vw;
+                margin: 0;
+                padding: 0;
+                background: yellow;
+            }
+            .source {
+                display: inline-block;
+                position: relative;
+                border: 1px solid black;
+                margin-bottom: 20px;
+                background: black;
+                width: 270px;
+                height: 270px;
+            }
+
+            .dest {
+                display: inline-block;
+                position: relative;
+                border: 1px solid black;
+                margin-bottom: 20px;
+                background: black;
+                width: 270px;
+                height: 270px;
+            }
+
+            .squareSource {
+                position: absolute;
+                width: 50px;
+                height: 50px;
+                margin-bottom: 5px;
+                margin-right: 5px;
+                background: red;
+            }
+
+            .squareDest {
+                position: absolute;
+                width: 50px;
+                height: 50px;
+                margin-bottom: 5px;
+                margin-right: 5px;
+                background: blue;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="source">
+            
+        </div>
+        <div class="dest">
+            
+        </div>
+    </body>
+</html>
+
