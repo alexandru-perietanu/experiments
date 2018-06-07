@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+
+            var body;
+            var rect1;
+            var rect2;
+            var r2x = 200;
+            var r2y = 200;
+            var r2w = 100; 
+            var r2h = 100; 
+
+            var r1w = 100; 
+            var r1h = 100;
+            
+            function init() {
+                body = document.body;
+                rect1 = document.getElementById("rect1");
+                rect2 = document.getElementById("rect2");
+                body.addEventListener("mousemove", bodyMouseMove);
+            };
+
+            function bodyMouseMove(e) {
+                rect1.style.left = e.clientX + "px";
+                rect1.style.top = e.clientY + "px";
+
+                var overlap = true;
+                if ((e.clientX > r2x + r2w) || (r2x > e.clientX + r1w)) {
+                    overlap = false;
+                }
+               if ((e.clientY > r2y + r2h) || (r2y > e.clientY + r1h)) {
+                   overlap = false;
+               }
+
+                if (overlap) {
+                   rect1.style.background = "yellow";
+                } else {
+                    rect1.style.background = "white";
+                }
+            }
+          
+
+            window.onload = init;
+        </script>
+        <style>
+            body {
+                width: 100vw;
+                height: 100vh;
+                margin: 0;
+            }
+            #rect1 {
+                display: inline-block;
+                position: absolute;
+                border: 1px solid blue;
+                width: 100px;
+                height: 100px;
+                
+            }
+
+            #rect2 {
+                display: inline-block;
+                position: absolute;
+                border: 1px solid blue;
+                height: 100px;
+                width: 100px;
+                top: 200px;
+                left: 200px;
+            }
+         
+        </style>
+    </head>
+    <body>
+        <div id="rect1"></div>
+        <div id="rect2"></div>
+    </body>
+</html>

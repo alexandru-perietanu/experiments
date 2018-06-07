@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+            // fa ordine din lista sa fie la fel cu ordinea de pe ecran
+            let list;
+            var listItems = [
+                /*{
+                    name: "default name", 
+                    description: "default description",
+                    elementReference: null
+                }*/
+            ];
+         
+            function init() {
+                list = document.getElementsByClassName("itemList")[0];
+                for (var i =0; i < 1; i++) {
+                    list.appendChild(createItem("item" + i, ("desc") + i));
+
+                }
+            };
+
+            function createItem(name, desc) {
+                let listItem = document.createElement("li");
+                let componentWrapper = document.createElement("div");
+                let nameDiv = document.createElement("div");
+                let descDiv = document.createElement("div");
+                let minusBtn = document.createElement("div");
+                let plusBtn = document.createElement("div");
+                let btnContainer = document.createElement("div");
+                listItem.style.background = "#" + Math.floor(Math.random() * 0xffffff).toString(16);
+
+                listItem.appendChild(componentWrapper);
+                listItem.appendChild(btnContainer);
+                btnContainer.appendChild(minusBtn);
+                btnContainer.appendChild(plusBtn);
+
+                minusBtn.className = "removeButton";
+                plusBtn.className = "plusButton";
+                nameDiv.className = "itemName";
+                descDiv.className = "itemDescription";
+                componentWrapper.className = "itemWrapper";
+                listItem.className = "listItem";
+                btnContainer.className = "buttonContainer"
+
+                plusBtn.innerHTML = "+";
+                minusBtn.innerHTML = "-";
+
+                nameDiv.innerHTML = name;
+                descDiv.innerHTML = desc;
+
+                listItems.push({name: name, 
+                                description: desc,
+                                elementReference: listItem
+                                });
+
+                componentWrapper.appendChild(nameDiv);
+                componentWrapper.appendChild(descDiv);
+
+                plusBtn.addEventListener("click", addListItem);
+                minusBtn.addEventListener("click", removeListItem);
+
+                return listItem;
+            };
+             
+            function findElementInArray(element) {
+                for (var i = 0; i < listItems.length; i++) {
+                    if (listItems[i].elementReference === element) {
+                        return i;
+                    }
+                }
+                return -1;
+            };
+
+
+
+            function addListItem(e) {
+                var parentElement = this.parentElement.parentElement;
+                var index = findElementInArray(parentElement);
+                var newItem = createItem("nume", "desc");
+                listItems[index].elementReference.insertAdjacentElement("afterend", newItem);
+            };
+
+
+            function removeListItem(e) {
+                var parentElement = this.parentElement.parentElement;
+                var index = findElementInArray(parentElement);
+                var item = listItems[index].elementReference;
+
+                item.getElementsByClassName("plusButton")[0].removeEventListener("click", addListItem);
+                item.getElementsByClassName("removeButton")[0].removeEventListener("click", removeListItem);
+                list.removeChild(item);
+                listItems.splice(index, 1);
+                console.log(listItems.length);
+            };
+
+            window.onload = init;
+        </script>
+        <style>
+            .buttonContainer {
+                width: 15px;
+                display: inline-block;
+                height: 40px;
+                vertical-align: top;
+                margin-left: 5px;
+                text-align: center;
+            }
+
+            .itemList {
+                list-style-type: none;
+                font-size: 0;
+            }
+
+            .listItem {
+                margin-bottom: 10px;
+            }
+
+            .removeButton {
+                width: 20px;
+                height: 20px;
+                display: inline-block;
+                background: red;
+                font-size: 14px;
+                cursor: pointer;
+            }
+
+            .plusButton {
+                width: 20px;
+                height: 20px;
+                display: inline-block;
+                background: white;
+                font-size: 14px;
+                cursor: pointer;
+            }
+
+            .itemName {
+                width: inherit;
+                height: 20px;
+                display: inline-block;
+                background: white;
+                font-size: 14px;
+            }
+
+            .itemDescription {
+                width: inherit;
+                height: 20px;
+                display: inline-block;
+                background: red;
+                font-size: 14px;
+            }
+
+            .itemWrapper {
+                width: 300px;
+                height: 40px;
+                background: yellow;
+                display: inline-block;
+            }
+
+        </style>
+    </head>
+    <body>
+        <ul class="itemList">
+        </ul>
+                
+    </body>
+</html>

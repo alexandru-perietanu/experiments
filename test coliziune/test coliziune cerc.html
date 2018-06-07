@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+
+            var body;
+            var rect1;
+            var rect2;
+            var c2x = 200;
+            var c2y = 200;
+            var r2 = 50;
+
+            var r1 = 50; 
+            
+            function init() {
+                body = document.body;
+                rect1 = document.getElementById("rect1");
+                rect2 = document.getElementById("rect2");
+                body.addEventListener("mousemove", bodyMouseMove);
+            };
+
+            function bodyMouseMove(e) {
+                cerc1.style.left = e.clientX + "px";
+                cerc1.style.top = e.clientY + "px";
+
+                var overlap = false;
+                if (Math.sqrt((e.clientX - c2x) * (e.clientX - c2x) + (e.clientY - c2y) * (e.clientY - c2y)) < r2 + r1) {
+                    overlap = true;
+                }
+                
+                if (overlap) {
+                    cerc1.style.background = "yellow";
+                } else {
+                    cerc1.style.background = "white";
+                }
+                
+            }
+          
+
+            window.onload = init;
+        </script>
+        <style>
+            body {
+                width: 100vw;
+                height: 100vh;
+                margin: 0;
+            }
+            #cerc1 {
+                display: inline-block;
+                position: absolute;
+                border: 1px solid blue;
+                width: 100px;
+                height: 100px;
+                margin-left: -50px;
+                margin-top: -50px;
+                border-radius: 50%;
+                
+            }
+
+            #cerc2 {
+                display: inline-block;
+                position: absolute;
+                border: 1px solid blue;
+                height: 100px;
+                width: 100px;
+                margin-left: -50px;
+                margin-top: -50px;
+                top: 200px;
+                left: 200px;
+                border-radius: 50%;
+            }
+         
+        </style>
+    </head>
+    <body>
+        <div id="cerc1"></div>
+        <div id="cerc2"></div>
+    </body>
+</html>

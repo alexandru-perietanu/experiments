@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+
+            let matrice;
+            let body;
+            let nrColumns = 10;
+            let nrLines = 10;
+            let width = 10;
+            let height = 10;
+            let space = 5;
+            let radius = 30;
+            let clientX;
+            let clientY;
+            
+            function init() {
+                body = document.getElementsByTagName("body")[0];
+                positionElementWithAbsolutePosition();
+                addMouseMoveListener();
+                window.requestAnimationFrame(moveSquares);
+            };
+
+            function positionElementWithAbsolutePosition() {
+                let square;
+                matrice = document.getElementsByClassName("matrice")[0];
+                for (let i = 0; i < nrLines; i++) {
+                    for (let j = 0; j < nrColumns; j++) {
+                        square = document.createElement("div");
+                        square.className = "squareAbsolute";
+                        square.id = "square" + i + j;
+                        square.style.left = (j * (width + space)) + "px"; 
+                        square.style.top = (i * (height + space)) + "px";
+                        matrice.appendChild(square);
+                    }
+                }
+            };
+
+            function addMouseMoveListener() {
+                body.addEventListener("mousemove", bodyMouseMove);
+            };
+
+            function bodyMouseMove(e) {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            };           
+            
+            function moveSquares() {
+                let currentSquare;
+                let distance;
+                let squareX;
+                let squareY;
+                let angle;
+                let angleDeg;
+                let squareParent;
+                
+                currentSquare = document.getElementById("square00");
+                squareParent = currentSquare.parentElement;
+
+                let parentX = squareParent.offsetLeft;
+                let parentY = squareParent.offsetTop;
+
+                  for (let i = 0; i < nrLines; i++) {
+                    for (let j = 0; j < nrColumns; j++) {   
+                        currentSquare = document.getElementById("square" + i + j);
+                        squareX = parentX + j * (width + space);
+                        squareY = parentY + i * (height + space);
+                        //angle = Math.atan2(squareY - clientY, squareX - clientX);
+                        distance = Math.sqrt((clientX - squareX) * (clientX - squareX) + (clientY - squareY) * (clientY - squareY));
+                        if (distance < radius) {
+                            currentSquare.style.background = "blue";
+                            //currentSquare.style.left = ((squareX - parentX) + Math.cos(angle) * radius) + "px";
+                            //currentSquare.style.top = ((squareY - parentY) + Math.sin(angle) * radius) + "px";
+                        } else {
+                            currentSquare.style.background = "red";
+                            //currentSquare.style.left = (j * (width + space)) + "px"; 
+                            //currentSquare.style.top = (i * (height + space)) + "px";
+                        }
+                    }
+                }
+                window.requestAnimationFrame(moveSquares);
+            }
+
+            window.onload = init;
+        </script>
+        <style>
+            body {
+                width: 100vw;
+                height: 100vh;
+                margin: 0;
+            }
+            .matrice {
+                position: absolute;
+                height: 150px;
+                width: 150px;
+                border: 1px solid black;
+                margin-bottom: 20px;
+                left: 50%;
+                margin-left: -75px;
+                top: 50%;
+                margin-top: -75px;
+                transform: translateZ(0);
+            }
+
+            .squareAbsolute {
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                margin-bottom: 5px;
+                margin-right: 5px;
+                background: red;
+                border-radius: 10px;
+                transition: left .2s, top .2s;
+                transform: translateZ(0);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="matrice">
+            
+        </div>
+        
+    </body>
+</html>
